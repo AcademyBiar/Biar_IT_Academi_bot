@@ -4,17 +4,13 @@ from telebot.types import ReplyKeyboardMarkup
 from telebot import types
 import sqlite3
 
-bot = telebot.TeleBot('6586474561:AAFBDSvUjnXsL85bYwH42oLKbvH7sf7-p3M')
+bot = telebot.TeleBot('6047727350:AAE4HdCcl_Ch3R6f8FIoNkUZqkqJe7EFk5E')
 
 menu1 = ReplyKeyboardMarkup(resize_keyboard=True)
-menu1.row('Обучение.')
-menu1.row('Консультация.')
-menu1.row('Курсы.')
-menu1.row('Вебинары.')
-menu1.row('Получить скидку.')
-menu1.row('Я студент и у меня есть вопрос.')
-menu1.row('Хочу подарок!')
-menu1.row('Это интересно.')
+menu1.row('Обучение.', 'Консультация.')
+menu1.row('Курсы.', 'Вебинары.')
+menu1.row('Получить скидку.', 'Задать вопрос.')
+menu1.row('Хочу подарок!', 'Это интересно.')
 menu2 = ReplyKeyboardMarkup(resize_keyboard=True)
 menu2.row('Основное меню.')
 
@@ -25,9 +21,13 @@ def start(message):
         bot.send_message(message.chat.id, '<b>Я - бот European IT Academy Biar. Помогу:</b>'
                                           '\nНайти ответы на вопросы.'
                                           '\nВыбрать и оплатить курс.'
-                                          '\nЧто вас интересует?', parse_mode='HTML',reply_markup=menu1)
+                                          '\nЧто вас интересует?',
+                         parse_mode='HTML',
+                         reply_markup=menu1)
 
-        # def create_table_user():
+        first_name = message.from_user.first_name
+        user_name = message.from_user.username
+        user_id = message.from_user.id
         con = sqlite3.connect('sqlite.db')
         cur = con.cursor()
         cur.execute('CREATE TABLE IF NOT EXISTS users ('
@@ -35,14 +35,18 @@ def start(message):
                     'first_name varchar,'
                     'user_name varchar,'
                     'user_id varchar)')
-        cur.execute(f'''INSERT INTO users (first_name, user_name, user_id)
-        values('{message.from_user.first_name}','{message.from_user.username}', '{message.from_user.id}')''')
-        # cur.execute('DROP TABLE users')
+        id_data = cur.execute('SELECT user_id FROM users').fetchall()
+        id_data = [u_id[0] for u_id in id_data]
+        if str(user_id) not in id_data:
+            # print(1)
+            cur.execute(f'''INSERT INTO users (first_name, user_name, user_id)
+                                    values('{first_name}','{user_name}', '{user_id}')''')
+        else:
+            pass
+        # cur.execute('DROP TABLE users')   # Delete table
         con.commit()
         con.close()
-        # while True:
         bot.register_next_step_handler(message, choice)
-        # create_table_user()
 
 
 def choice(message):
@@ -139,7 +143,7 @@ def choice(message):
             else:
                 pass
         bot.register_next_step_handler(message, choice)
-    elif message.text == 'Я студент и у меня есть вопрос.':
+    elif message.text == 'Задать вопрос.':
         bot.send_message(message.chat.id, '<b>Если Вы уже учитесь у нас и у Вас есть вопросы:</b>'
                                           'Отправьте свой вопрос нам на почту - biaritacademy@gmail.com\n'
                                           'Мы ответим так быстро, насколько это возможно\n'
@@ -171,9 +175,24 @@ def choice(message):
                          parse_mode='HTML',
                          reply_markup=menu2)
         bot.register_next_step_handler(message, back)
+    elif message.text == '/ba':
+        message = bot.send_message(message.chat.id, 'Введите сообщение для рассылки всем пользователм:')
+        bot.register_next_step_handler(message, mailing)
     else:
         bot.send_message(message.chat.id, 'Такой команды не существует. Пожалуйста, повторите ввод.',
                          reply_markup=menu1)
+        bot.register_next_step_handler(message, back)
+
+
+def mailing(message):
+    con = sqlite3.connect('sqlite.db')
+    cur = con.cursor()
+    id_data = cur.execute('SELECT user_id FROM users').fetchall()
+    id_data = [u_id[0] for u_id in id_data]
+    con.close()
+    print(id_data)
+    for user_id in id_data:
+        bot.send_message(user_id, f'{message.text}', parse_mode='HTML')
 
 
 def back(message):

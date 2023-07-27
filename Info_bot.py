@@ -175,7 +175,7 @@ def choice(message):
                          parse_mode='HTML',
                          reply_markup=menu2)
         bot.register_next_step_handler(message, back)
-    elif message.text == '/ba':
+    elif message.text == '/biar__admin':
         message = bot.send_message(message.chat.id, 'Введите сообщение для рассылки всем пользователм:')
         bot.register_next_step_handler(message, mailing)
     else:

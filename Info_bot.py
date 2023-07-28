@@ -15,7 +15,7 @@ menu2 = ReplyKeyboardMarkup(resize_keyboard=True)
 menu2.row('Основное меню.')
 
 
-@bot.message_handler()
+@bot.message_handler(commands=['start'])
 def start(message):
     if message.text == '/start':
         bot.send_message(message.chat.id, '<b>Я - бот European IT Academy Biar. Помогу:</b>'
@@ -47,6 +47,11 @@ def start(message):
         con.commit()
         con.close()
         bot.register_next_step_handler(message, choice)
+
+
+@bot.message_handler(func=lambda message: message.text)
+def no_start(message):
+    bot.register_next_step_handler(message, choice)
 
 
 def choice(message):

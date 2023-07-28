@@ -181,7 +181,7 @@ def choice(message):
     else:
         bot.send_message(message.chat.id, 'Такой команды не существует. Пожалуйста, повторите ввод.',
                          reply_markup=menu1)
-        bot.register_next_step_handler(message, back)
+        bot.register_next_step_handler(message, choice)
 
 
 def mailing(message):
@@ -190,9 +190,10 @@ def mailing(message):
     id_data = cur.execute('SELECT user_id FROM users').fetchall()
     id_data = [u_id[0] for u_id in id_data]
     con.close()
-    print(id_data)
+    # print(id_data)
     for user_id in id_data:
         bot.send_message(user_id, f'{message.text}', parse_mode='HTML')
+    bot.register_next_step_handler(message, choice)
 
 
 def back(message):

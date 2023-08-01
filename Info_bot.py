@@ -9,9 +9,9 @@ bot = telebot.TeleBot('6047727350:AAE4HdCcl_Ch3R6f8FIoNkUZqkqJe7EFk5E')
 menu1 = ReplyKeyboardMarkup(resize_keyboard=True)
 menu1.row('Обучение.', 'Консультация.')
 menu1.row('Бесплатное занятие.')
-menu1.row('Курсы.', 'Задать вопрос.')
-# menu1.row('Курсы.', 'Вебинары.')
-# menu1.row('Получить скидку.', 'Задать вопрос.')
+# menu1.row('Курсы.', 'Задать вопрос.')
+menu1.row('Курсы.', 'Вебинары.')
+menu1.row('Получить скидку.', 'Задать вопрос.')
 menu1.row('Хочу подарок!', 'Это интересно.')
 menu2 = ReplyKeyboardMarkup(resize_keyboard=True)
 menu2.row('Основное меню.')
@@ -144,41 +144,57 @@ def choice(message):
                          parse_mode='HTML',
                          reply_markup=choice_course)
         bot.register_next_step_handler(message, choice)
-    # elif message.text == 'Вебинары.':
-    #     choice_veb = types.InlineKeyboardMarkup()
-    #     veb1 = types.InlineKeyboardButton(text='Программирование',
-    #                                       url='https://www.itbiar.com/our-courses-programming')
-    #     veb2 = types.InlineKeyboardButton(text="Тестирование",
-    #                                       url='https://www.itbiar.com/our-courses-qa')
-    #     veb3 = types.InlineKeyboardButton(text='Дизайн',
-    #                                       url='https://www.itbiar.com/our-courses-design')
-    #     veb4 = types.InlineKeyboardButton(text="HR рекрутинг",
-    #                                       url='https://www.itbiar.com/our-courses-hr')
-    #     choice_veb.row(veb1, veb2)
-    #     choice_veb.row(veb3, veb4)
-    #     bot.send_message(message.chat.id, '<b>Вебинары.\n</b>'
-    #                                       'Выберите направление, которое Вас интересует:',
-    #                      parse_mode='HTML',
-    #                      reply_markup=choice_veb)
-    #     bot.register_next_step_handler(message, choice)
-    # elif message.text == 'Получить скидку.':
-    #     choice_ans = types.InlineKeyboardMarkup()
-    #     ans1 = types.InlineKeyboardButton(text='Да', callback_data='yes')
-    #     ans2 = types.InlineKeyboardButton(text="Нет", callback_data='no')
-    #     choice_ans.add(ans1, ans2)
-    #     bot.send_message(message.chat.id, '<b>Получить скидку.\n</b>'
-    #                                       'Вы уже проходите или проходили курсы Biar?',
-    #                      parse_mode='HTML',
-    #                      reply_markup=choice_ans)
-    #
-    #     @bot.callback_query_handler(func=lambda callback: callback)
-    #     def disc_show(callback):
-    #         if callback.data == 'no':
-    #             bot.send_message(callback.message.chat.id,
-    #                              'Введите промокод NEXT при оформлении покупки курса на сайте и получите скидку 15%')
-    #         else:
-    #             pass
-    #     bot.register_next_step_handler(message, choice)
+    elif message.text == 'Вебинары.':
+        choice_veb = types.InlineKeyboardMarkup()
+        veb1 = types.InlineKeyboardButton(text='Программирование',
+                                          url='https://www.itbiar.com/webinars')
+        veb2 = types.InlineKeyboardButton(text="Тестирование",
+                                          url='https://www.itbiar.com/webinars')
+        veb3 = types.InlineKeyboardButton(text='Дизайн',
+                                          url='https://www.itbiar.com/webinars')
+        veb4 = types.InlineKeyboardButton(text="HR рекрутинг",
+                                          url='https://www.itbiar.com/webinars')
+        choice_veb.row(veb1, veb2)
+        choice_veb.row(veb3, veb4)
+        bot.send_message(message.chat.id, '<b>Вебинары.\n</b>'
+                                          'Выберите направление, которое Вас интересует:',
+                         parse_mode='HTML',
+                         reply_markup=choice_veb)
+        bot.register_next_step_handler(message, choice)
+    elif message.text == 'Получить скидку.':
+        choice_ans = types.InlineKeyboardMarkup()
+        ans1 = types.InlineKeyboardButton(text='✅ Да', callback_data='yes')
+        ans2 = types.InlineKeyboardButton(text="❌ Нет", callback_data='no')
+        choice_ans.add(ans1, ans2)
+        bot.send_message(message.chat.id, '<b>Получить скидку.\n</b>'
+                                          'Вы уже проходите или проходили курсы Biar?',
+                         parse_mode='HTML',
+                         reply_markup=choice_ans)
+
+        @bot.callback_query_handler(func=lambda callback: callback)
+        def disc_show(callback):
+            if callback.data == 'no':
+                guide_inline = types.InlineKeyboardMarkup()
+                guide_button = types.InlineKeyboardButton(text='🔥 Гайд по входу в IT 2023 тут', url='https://'
+                                                                                                    'e03dc1fb-f21c-'
+                                                                                                    '4092-bd5c-'
+                                                                                                    '4d20cea1e3fb.'
+                                                                                                    'usrfiles.com/ugd/'
+                                                                                                    'e03dc1_eabcfb672d7'
+                                                                                                    '24305b71b979d3701'
+                                                                                                    '7438.pdf')
+                guide_inline.add(guide_button)
+                bot.send_message(callback.message.chat.id,
+                                 '<b>Для Вас мы подготовили:</b>\n'
+                                 '\n1) промокод BOTBIAR на скидку 20% при оформлении покупки курса на сайте\n'
+                                 '2) Ваш гайд по входу в IT в 2023 году прямо по ссылке:',
+                                 parse_mode='HTML',
+                                 reply_markup=guide_inline)
+            elif callback.data == 'yes':
+                bot.send_message(callback.message.chat.id, '<b>Для Вас мы подготовили:</b>\n'
+                                                           '\nПромокод BOTBIAR на скидку 20% при оформлении покупки '
+                                                           'курса на сайте', parse_mode='HTML')
+        bot.register_next_step_handler(message, choice)
     elif message.text == 'Задать вопрос.':
         bot.send_message(message.chat.id, '<b>Если Вы уже учитесь у нас и у Вас есть вопросы:</b>'
                                           'Отправьте свой вопрос нам на почту - biaritacademy@gmail.com\n'
@@ -189,10 +205,12 @@ def choice(message):
         bot.register_next_step_handler(message, back)
     elif message.text == 'Хочу подарок!':
         choice_gift = types.InlineKeyboardMarkup()
-        gift1 = types.InlineKeyboardButton(text='Гайд по изучению английского языка',
-                                           url='https://www.itbiar.com/')
-        gift2 = types.InlineKeyboardButton(text="Бесплатный урок английского",
-                                           url='https://www.itbiar.com/')
+        gift1 = types.InlineKeyboardButton(text='🔥 Гайд по обучению в IT',
+                                           url='https://e03dc1fb-f21c-4092-bd5c-4d20cea1e3fb.usrfiles.com/ugd/'
+                                               'e03dc1_eabcfb672d724305b71b979d37017438.pdf')
+        gift2 = types.InlineKeyboardButton(text="🇬🇧 Английский язык для IT 🇺🇸",
+                                           url='https://e03dc1fb-f21c-4092-bd5c-4d20cea1e3fb.usrfiles.com/ugd/'
+                                               'e03dc1_3d5a08a54006468d93f1ab910aee9dcb.pdf')
         choice_gift.row(gift1)
         choice_gift.row(gift2)
         bot.send_message(message.chat.id, '<b>Подарки.\n</b>'

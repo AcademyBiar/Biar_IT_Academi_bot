@@ -118,7 +118,9 @@ def choice(message):
                                           'Мы ответим так быстро, насколько это возможно'
                          ,
                          reply_markup=choice_faq)
-        bot.register_next_step_handler(message, choice)
+        bot.send_message(message.chat.id, 'Для выхода в главное меню нажмите кнопку "Основное меню."',
+                         reply_markup=menu2)
+        bot.register_next_step_handler(message, back)
     elif message.text == 'Бесплатное занятие.':
         free_link = types.InlineKeyboardMarkup()
         link = types.InlineKeyboardButton(text='Бесплатные уроки тут', url='https://www.itbiar.com/lesson-example')
@@ -131,7 +133,9 @@ def choice(message):
                                           'UX/UI дизайн\n'
                                           'Figma\n'
                                           'IT рекрутинг', parse_mode='HTML', reply_markup=free_link)
-        bot.register_next_step_handler(message, choice)
+        bot.send_message(message.chat.id, 'Для выхода в главное меню нажмите кнопку "Основное меню."',
+                         reply_markup=menu2)
+        bot.register_next_step_handler(message, back)
     elif message.text == 'Курсы.':
         choice_course = types.InlineKeyboardMarkup()
         course1 = types.InlineKeyboardButton(text='Программирование',
@@ -149,7 +153,9 @@ def choice(message):
                                           'и станьте на шаг ближе ко входу в мир IT:',
                          parse_mode='HTML',
                          reply_markup=choice_course)
-        bot.register_next_step_handler(message, choice)
+        bot.send_message(message.chat.id, 'Для выхода в главное меню нажмите кнопку "Основное меню."',
+                         reply_markup=menu2)
+        bot.register_next_step_handler(message, back)
     elif message.text == 'Вебинары.':
         choice_veb = types.InlineKeyboardMarkup()
         veb1 = types.InlineKeyboardButton(text='Программирование',
@@ -166,7 +172,9 @@ def choice(message):
                                           'Выберите направление, которое Вас интересует:',
                          parse_mode='HTML',
                          reply_markup=choice_veb)
-        bot.register_next_step_handler(message, choice)
+        bot.send_message(message.chat.id, 'Для выхода в главное меню нажмите кнопку "Основное меню."',
+                         reply_markup=menu2)
+        bot.register_next_step_handler(message, back)
     elif message.text == 'Получить скидку.':
         choice_ans = types.InlineKeyboardMarkup()
         ans1 = types.InlineKeyboardButton(text='✅ Да', callback_data='yes')
@@ -200,7 +208,10 @@ def choice(message):
                 bot.send_message(callback.message.chat.id, '<b>Для Вас мы подготовили:</b>\n'
                                                            '\nПромокод BOTBIAR на скидку 20% при оформлении покупки '
                                                            'курса на сайте', parse_mode='HTML')
-        bot.register_next_step_handler(message, choice)
+
+        bot.send_message(message.chat.id, 'Для выхода в главное меню нажмите кнопку "Основное меню."',
+                         reply_markup=menu2)
+        bot.register_next_step_handler(message, back)
     # elif message.text == 'Задать вопрос.':
     #     bot.send_message(message.chat.id, '<b>Если Вы уже учитесь у нас и у Вас есть вопросы:</b>'
     #                                       'Отправьте свой вопрос нам на почту - biaritacademy@gmail.com\n'
@@ -223,7 +234,9 @@ def choice(message):
                                           'Какой подарок вы бы хотели получить?',
                          parse_mode='HTML',
                          reply_markup=choice_gift)
-        bot.register_next_step_handler(message, choice)
+        bot.send_message(message.chat.id, 'Для выхода в главное меню нажмите кнопку "Основное меню."',
+                         reply_markup=menu2)
+        bot.register_next_step_handler(message, back)
     elif message.text == 'Это интересно.':
         text = '*Статьи:*\n' \
                '[Полезные статьи тут 📚](https://www.itbiar.com/%D1%80%D0%B5%D0%B3%D0%' \

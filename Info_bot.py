@@ -3,7 +3,7 @@ from telebot.types import ReplyKeyboardMarkup
 from telebot import types
 import sqlite3
 
-bot = telebot.TeleBot('6047727350:AAE4HdCcl_Ch3R6f8FIoNkUZqkqJe7EFk5E')
+bot = telebot.TeleBot('6284976456:AAE7rXYkLmBg2FYDSKuz5VoxHASo_jedJdA')
 
 menu1 = ReplyKeyboardMarkup(resize_keyboard=True)
 menu1.row('Обучение.', 'Консультация.')

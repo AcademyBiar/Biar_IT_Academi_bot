@@ -1,1 +1,1 @@
-worker: python3 info_bot.py
+worker: python3 Info_bot.py

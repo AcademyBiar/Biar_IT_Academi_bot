@@ -29,6 +29,7 @@ def start(message):
         user_id = message.from_user.id
         con = sqlite3.connect('sqlite.db')
         cur = con.cursor()
+        cur.execute('DROP TABLE users')
         cur.execute('CREATE TABLE IF NOT EXISTS users ('
                     'id INTEGER PRIMARY KEY AUTOINCREMENT,'
                     'first_name varchar,'

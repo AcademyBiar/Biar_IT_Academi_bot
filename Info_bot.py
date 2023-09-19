@@ -45,6 +45,7 @@ def start(message):
         # cur.execute('DROP TABLE users')   # Delete table
         con.commit()
         con.close()
+
     if message.text == 'Обучение.':
         bot.send_message(message.chat.id, '*Обучение 📌*\n'
                                           '☑️Выбираете вариант обучения (light, standard или premium).\n'

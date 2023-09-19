@@ -14,7 +14,7 @@ menu2 = ReplyKeyboardMarkup(resize_keyboard=True)
 menu2.row('Основное меню.')
 
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler()
 def start(message):
     if message.text == '/start':
         bot.send_message(message.chat.id, '<b>Я - бот European IT Academy Biar. Помогу:</b>\n'
@@ -247,7 +247,7 @@ def start(message):
     else:
         bot.send_message(message.chat.id, 'Такой команды не существует. Пожалуйста, повторите ввод.',
                          reply_markup=menu1)
-        bot.register_next_step_handler(message)
+
 
 
 
